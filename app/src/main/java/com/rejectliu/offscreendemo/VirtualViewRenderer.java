@@ -7,14 +7,14 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 
-public class RectRender implements GLSurfaceView.Renderer {
+public class VirtualViewRender implements GLSurfaceView.Renderer {
 
     private final SurfaceTexture mSurfaceTexture;
     private MainFrameRect mMainFrameRect;
     private int mTextureObject;
     private float[] mTransform;
 
-    public RectRender(SurfaceTexture surfaceTexture) {
+    public VirtualViewRender(SurfaceTexture surfaceTexture) {
         mSurfaceTexture = surfaceTexture;
     }
 

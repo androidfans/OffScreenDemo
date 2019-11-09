@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.rejectliu.offscreendemo;
+package com.android.grafika.gles;
+
+import android.opengl.Matrix;
 
 /**
- * This class is used to cut the top and bottom area of the screen and
- * just keep the center main part.
- *
- * In this demo, we'll cut the status bar and navigation bar of the screen
+ * This class essentially represents a viewport-sized sprite that will be rendered with
+ * a texture, usually from an external source like the camera or video decoder.
  */
-public class MainFrameRect {
-    private final CroppedDrawable2d mRectDrawable;
+public class FullFrameRect {
+    private final Drawable2d mRectDrawable = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
     private Texture2dProgram mProgram;
 
     /**
@@ -32,8 +32,7 @@ public class MainFrameRect {
      * @param program The program to use.  FullFrameRect takes ownership, and will release
      *     the program when no longer needed.
      */
-    public MainFrameRect(Texture2dProgram program) {
-        mRectDrawable = new CroppedDrawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
+    public FullFrameRect(Texture2dProgram program) {
         mProgram = program;
     }
 
@@ -69,20 +68,6 @@ public class MainFrameRect {
     public void changeProgram(Texture2dProgram program) {
         mProgram.release();
         mProgram = program;
-    }
-
-    /**
-     * @param bottomCropped defines the bottom area to be cut. from 0f-1f.
-     */
-    public void setBottomCropped(float bottomCropped) {
-        mRectDrawable.setBottomCropped(bottomCropped);
-    }
-
-    /**
-     * @param topCropped defines the top area to be cut. from 0f-1f.
-     */
-    public void setTopCropped(float topCropped) {
-        mRectDrawable.setTopCropped(topCropped);
     }
 
     /**
