@@ -42,12 +42,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
         mSurfaceTexture.detachFromGLContext();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         DisplayManager displayManager = (DisplayManager)getSystemService(DISPLAY_SERVICE);
-        mSurfaceTexture.setDefaultBufferSize(dm.widthPixels, dm.heightPixels);
+        int width = 1440, height = 2600;
+        mSurfaceTexture.setDefaultBufferSize(width, height);
         VirtualDisplay offscreenDisplay = displayManager.createVirtualDisplay("offscreenDisplay", dm.widthPixels, dm.heightPixels, dm.densityDpi, new Surface(mSurfaceTexture), 0);
         mSurfaceTexture.setOnFrameAvailableListener(this);
         SimplePresentation simplePresentation = new SimplePresentation(this, offscreenDisplay.getDisplay());
         simplePresentation.show();
-
+//
 //        textView = findViewById(R.id.surface_view);
 //        textView.setSurfaceTexture(mSurfaceTexture);
 
