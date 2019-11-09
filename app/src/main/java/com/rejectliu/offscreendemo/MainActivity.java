@@ -42,19 +42,20 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
         mSurfaceTexture.detachFromGLContext();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         DisplayManager displayManager = (DisplayManager)getSystemService(DISPLAY_SERVICE);
+        mSurfaceTexture.setDefaultBufferSize(dm.widthPixels, dm.heightPixels);
         VirtualDisplay offscreenDisplay = displayManager.createVirtualDisplay("offscreenDisplay", dm.widthPixels, dm.heightPixels, dm.densityDpi, new Surface(mSurfaceTexture), 0);
         mSurfaceTexture.setOnFrameAvailableListener(this);
         SimplePresentation simplePresentation = new SimplePresentation(this, offscreenDisplay.getDisplay());
         simplePresentation.show();
 
-        textView = findViewById(R.id.surface_view);
-        textView.setSurfaceTexture(mSurfaceTexture);
+//        textView = findViewById(R.id.surface_view);
+//        textView.setSurfaceTexture(mSurfaceTexture);
 
-//        surfaceView = findViewById(R.id.surface_view);
-//        surfaceView.setEGLContextClientVersion(2);
-//        RectRender render = new RectRender(mSurfaceTexture);
-//        surfaceView.setRenderer(render);
-//        surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        surfaceView = findViewById(R.id.surface_view);
+        surfaceView.setEGLContextClientVersion(2);
+        RectRender render = new RectRender(mSurfaceTexture);
+        surfaceView.setRenderer(render);
+        surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     @Override
