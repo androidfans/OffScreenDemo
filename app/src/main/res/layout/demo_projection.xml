@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:scaleType="centerCrop"
+    android:background="@drawable/timg"
+    android:layout_height="match_parent">
+
+    <View
+        android:background="@android:color/holo_red_dark"
+        android:layout_width="1px"
+        android:layout_height="1px" />
+
+<!--    <TextView-->
+<!--        android:background="@android:color/black"-->
+<!--        android:textSize="30sp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:text="我看见你辣"-->
+<!--        android:layout_height="wrap_content" />-->
+</FrameLayout>
