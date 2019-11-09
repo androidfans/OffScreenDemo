@@ -1,4 +1,4 @@
-package com.cgfay.filter.glfilter.utils;
+package com.rejectliu.offscreendemo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import android.opengl.Matrix;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cgfay.uitls.utils.BitmapUtils;
+import com.rejectliu.offscreendemo.util.BitmapUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

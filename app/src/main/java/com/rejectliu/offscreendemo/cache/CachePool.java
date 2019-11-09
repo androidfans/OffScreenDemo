@@ -1,6 +1,5 @@
-package com.hoko.blur.opengl.cache;
+package com.rejectliu.offscreendemo.cache;
 
-import com.hoko.blur.util.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,13 +23,11 @@ public abstract class CachePool<K, V> {
     }
 
     public CachePool(int maxSize) {
-        Preconditions.checkArgument(maxSize > 0, "maxSize <= 0");
         mMaxSize = maxSize;
         mInternalCache = new LinkedList<>();
     }
 
     public final V get(K key) {
-        Preconditions.checkNotNull(key, "size == null");
         V listValue = remove(key);
         if (listValue != null) {
             return listValue;
@@ -41,7 +38,6 @@ public abstract class CachePool<K, V> {
     }
 
     public final void put(V v) {
-        Preconditions.checkNotNull(v, "value == null");
         try {
             if (!mInternalCache.contains(v)) {
                 synchronized (this) {
@@ -57,7 +53,6 @@ public abstract class CachePool<K, V> {
     }
 
     private V remove(K key) {
-        Preconditions.checkNotNull(key, "key == null");
 
         V previous = null;
         synchronized (this) {
@@ -76,7 +71,7 @@ public abstract class CachePool<K, V> {
     }
 
     public void delete(K key) {
-        Preconditions.checkNotNull(key, "key == null");
+
         V removed = remove(key);
         if (removed != null) {
             entryDeleted(removed);

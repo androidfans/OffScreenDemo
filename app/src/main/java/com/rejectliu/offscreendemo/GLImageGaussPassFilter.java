@@ -1,9 +1,8 @@
-package com.cgfay.filter.glfilter.base;
+package com.rejectliu.offscreendemo;
 
 import android.content.Context;
 import android.opengl.GLES20;
 
-import com.cgfay.filter.glfilter.utils.OpenGLUtils;
 
 /**
  * 某个通道的高斯模糊
@@ -18,9 +17,58 @@ class GLImageGaussPassFilter extends GLImageFilter {
     private float mTexelWidth;
     private float mTexelHeight;
 
+    private static String fragmentShader =
+                    "// 优化后的高斯模糊\n" +
+                            "precision mediump float;\n" +
+                            "varying vec2 textureCoordinate;\n" +
+                            "uniform sampler2D inputTexture;\n" +
+                            "// 高斯算子左右偏移值，当偏移值为2时，高斯算子为5 x 5\n" +
+                            "const int SHIFT_SIZE = 2;\n" +
+                            "varying vec4 blurShiftCoordinates[SHIFT_SIZE];\n" +
+                            "void main() {\n" +
+                            "    // 计算当前坐标的颜色值\n" +
+                            "    vec4 currentColor = texture2D(inputTexture, textureCoordinate);\n" +
+                            "    mediump vec3 sum = currentColor.rgb;\n" +
+                            "    // 计算偏移坐标的颜色值总和\n" +
+                            "    for (int i = 0; i < SHIFT_SIZE; i++) {\n" +
+                            "        sum += texture2D(inputTexture, blurShiftCoordinates[i].xy).rgb;\n" +
+                            "        sum += texture2D(inputTexture, blurShiftCoordinates[i].zw).rgb;\n" +
+                            "    }\n" +
+                            "    // 求出平均值\n" +
+                            "    gl_FragColor = vec4(sum * 1.0 / float(2 * SHIFT_SIZE + 1), currentColor.a);\n" +
+                            "}";
+
+    private static String vertexShader =
+            "\n" +
+                    "// 优化后的高斯模糊\n" +
+                    "attribute vec4 aPosition;\n" +
+                    "attribute vec4 aTextureCoord;\n" +
+                    "\n" +
+                    "// 高斯算子左右偏移值，当偏移值为2时，高斯算子为5 x 5\n" +
+                    "const int SHIFT_SIZE = 2;\n" +
+                    "\n" +
+                    "uniform highp float texelWidthOffset;\n" +
+                    "uniform highp float texelHeightOffset;\n" +
+                    "\n" +
+                    "varying vec2 textureCoordinate;\n" +
+                    "varying vec4 blurShiftCoordinates[SHIFT_SIZE];\n" +
+                    "\n" +
+                    "void main() {\n" +
+                    "    gl_Position = aPosition;\n" +
+                    "    textureCoordinate = aTextureCoord.xy;\n" +
+                    "    // 偏移步距\n" +
+                    "    vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n" +
+                    "    // 记录偏移坐标\n" +
+                    "    for (int i = 0; i < SHIFT_SIZE; i++) {\n" +
+                    "        blurShiftCoordinates[i] = vec4(textureCoordinate.xy - float(i + 1) * singleStepOffset,\n" +
+                    "                                       textureCoordinate.xy + float(i + 1) * singleStepOffset);\n" +
+                    "    }\n" +
+                    "}";
+
     public GLImageGaussPassFilter(Context context) {
-        this(context, OpenGLUtils.getShaderFromAssets(context, "shader/base/vertex_gaussian_pass.glsl"),
-                OpenGLUtils.getShaderFromAssets(context, "shader/base/fragment_gaussian_pass.glsl"));
+        this(context, vertexShader,
+                fragmentShader);
+
     }
 
     public GLImageGaussPassFilter(Context context, String vertexShader, String fragmentShader) {

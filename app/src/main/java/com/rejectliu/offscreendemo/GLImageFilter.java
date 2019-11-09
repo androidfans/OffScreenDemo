@@ -1,12 +1,10 @@
-package com.cgfay.filter.glfilter.base;
+package com.rejectliu.offscreendemo;
 
 import android.content.Context;
 import android.graphics.PointF;
 import android.opengl.GLES30;
 import android.text.TextUtils;
 
-import com.cgfay.filter.glfilter.utils.OpenGLUtils;
-import com.cgfay.filter.glfilter.utils.TextureRotationUtils;
 
 import java.nio.FloatBuffer;
 import java.util.LinkedList;

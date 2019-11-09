@@ -1,25 +1,22 @@
-package com.hoko.blur.opengl.framebuffer;
+package com.rejectliu.offscreendemo.util;
 
 import android.opengl.GLES20;
-
-import com.hoko.blur.api.IFrameBuffer;
-import com.hoko.blur.api.ITexture;
 
 /**
  * Created by yuxfzju on 2017/1/22.
  */
 
-class FrameBuffer implements IFrameBuffer {
+public class FrameBuffer implements IFrameBuffer {
 
     private int mFrameBufferId;
 
     private ITexture mTexture;
 
-    FrameBuffer() {
+    public FrameBuffer() {
         create();
     }
 
-    FrameBuffer(int id) {
+    public FrameBuffer(int id) {
         mFrameBufferId = id;
     }
 

@@ -1,4 +1,4 @@
-package com.cgfay.uitls.utils;
+package com.rejectliu.offscreendemo.util;
 
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;

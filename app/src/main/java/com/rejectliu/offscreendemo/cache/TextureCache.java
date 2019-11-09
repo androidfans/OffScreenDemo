@@ -1,8 +1,9 @@
-package com.hoko.blur.opengl.cache;
+package com.rejectliu.offscreendemo.cache;
 
-import com.hoko.blur.api.ITexture;
-import com.hoko.blur.opengl.texture.TextureFactory;
-import com.hoko.blur.opengl.util.Size;
+
+import com.rejectliu.offscreendemo.util.ITexture;
+import com.rejectliu.offscreendemo.util.Size;
+import com.rejectliu.offscreendemo.util.TextureFactory;
 
 /**
  * Created by yuxfzju on 17/1/20.

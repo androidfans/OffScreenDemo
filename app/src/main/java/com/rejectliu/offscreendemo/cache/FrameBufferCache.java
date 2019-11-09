@@ -1,7 +1,8 @@
-package com.hoko.blur.opengl.cache;
+package com.rejectliu.offscreendemo.cache;
 
-import com.hoko.blur.api.IFrameBuffer;
-import com.hoko.blur.opengl.framebuffer.FrameBufferFactory;
+
+import com.rejectliu.offscreendemo.FrameBufferFactory;
+import com.rejectliu.offscreendemo.util.IFrameBuffer;
 
 /**
  * Created by yuxfzju on 2017/1/21.

@@ -1,10 +1,9 @@
-package com.hoko.blur.util;
+package com.rejectliu.offscreendemo.util;
 
 import android.opengl.GLES20;
 import android.util.Log;
 
-import com.hoko.blur.HokoBlur;
-import com.hoko.blur.anno.Mode;
+import com.rejectliu.offscreendemo.HokoBlur;
 
 /**
  * Created by yuxfzju on 16/9/4.
@@ -42,7 +41,7 @@ public class ShaderUtil {
         return error == 0;
     }
 
-    public static String getFragmentShaderCode(@Mode int mode) {
+    public static String getFragmentShaderCode(int mode) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" \n")

@@ -1,9 +1,4 @@
-package com.hoko.blur;
-
-import android.content.Context;
-
-import com.hoko.blur.api.IBlurBuild;
-import com.hoko.blur.processor.HokoBlurBuild;
+package com.rejectliu.offscreendemo;
 
 /**
  * Created by yuxfzju on 16/9/7.
@@ -22,9 +17,5 @@ public final class HokoBlur {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
     public static final int BOTH = 2;
-
-    public static IBlurBuild with(Context context) {
-        return new HokoBlurBuild(context.getApplicationContext());
-    }
 
 }

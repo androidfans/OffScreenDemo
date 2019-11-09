@@ -1,8 +1,6 @@
-package com.hoko.blur.opengl.texture;
+package com.rejectliu.offscreendemo.util;
 
 import android.opengl.GLES20;
-
-import com.hoko.blur.api.ITexture;
 
 /**
  * Created by yuxfzju on 17/1/20.
@@ -10,7 +8,7 @@ import com.hoko.blur.api.ITexture;
 
 public abstract class Texture implements ITexture {
 
-    private int mTextureId;
+    public int mTextureId;
 
     private int mWidth;
 

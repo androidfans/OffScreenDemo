@@ -1,8 +1,6 @@
-package com.cgfay.filter.glfilter.base;
+package com.rejectliu.offscreendemo;
 
 import android.content.Context;
-
-import com.cgfay.filter.glfilter.utils.OpenGLUtils;
 
 import java.nio.FloatBuffer;
 

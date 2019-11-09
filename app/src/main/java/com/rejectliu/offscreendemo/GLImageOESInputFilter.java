@@ -1,10 +1,8 @@
-package com.cgfay.filter.glfilter.base;
+package com.rejectliu.offscreendemo;
 
 import android.content.Context;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES30;
-
-import com.cgfay.filter.glfilter.utils.OpenGLUtils;
 
 /**
  * 外部纹理(OES纹理)输入
@@ -13,12 +11,34 @@ import com.cgfay.filter.glfilter.utils.OpenGLUtils;
 
 public class GLImageOESInputFilter extends GLImageFilter {
 
+    private static String fragmentShader =
+            "#extension GL_OES_EGL_image_external : require\n" +
+                    "precision mediump float;\n" +
+                    "varying vec2 textureCoordinate;\n" +
+                    "uniform samplerExternalOES inputTexture;\n" +
+                    "void main() {\n" +
+                    "    gl_FragColor = texture2D(inputTexture, textureCoordinate);\n" +
+                    "}";
+
+    private static String vertexShader =
+            "// GL_OES_EGL_image_external 格式纹理输入滤镜，其中transformMatrix是SurfaceTexture的transformMatrix\n" +
+                    "uniform mat4 transformMatrix;\n" +
+                    "attribute vec4 aPosition;\n" +
+                    "attribute vec4 aTextureCoord;\n" +
+                    "\n" +
+                    "varying vec2 textureCoordinate;\n" +
+                    "\n" +
+                    "void main() {\n" +
+                    "    gl_Position = aPosition;\n" +
+                    "    textureCoordinate = (transformMatrix * aTextureCoord).xy;\n" +
+                    "}\n";
+
+
     private int mTransformMatrixHandle;
     private float[] mTransformMatrix;
 
     public GLImageOESInputFilter(Context context) {
-        this(context, OpenGLUtils.getShaderFromAssets(context, "shader/base/vertex_oes_input.glsl"),
-                OpenGLUtils.getShaderFromAssets(context, "shader/base/fragment_oes_input.glsl"));
+        this(context, vertexShader, fragmentShader);
     }
 
     public GLImageOESInputFilter(Context context, String vertexShader, String fragmentShader) {

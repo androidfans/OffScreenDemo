@@ -1,8 +1,9 @@
-package com.hoko.blur.opengl.framebuffer;
+package com.rejectliu.offscreendemo;
 
 import android.opengl.GLES20;
 
-import com.hoko.blur.api.IFrameBuffer;
+import com.rejectliu.offscreendemo.util.FrameBuffer;
+import com.rejectliu.offscreendemo.util.IFrameBuffer;
 
 /**
  * Created by yuxfzju on 2017/1/22.

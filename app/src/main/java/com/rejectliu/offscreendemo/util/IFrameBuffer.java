@@ -1,4 +1,4 @@
-package com.hoko.blur.api;
+package com.rejectliu.offscreendemo.util;
 
 /**
  * Created by yuxfzju on 2017/1/22.

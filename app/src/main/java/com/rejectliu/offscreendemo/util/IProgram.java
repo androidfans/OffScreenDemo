@@ -1,4 +1,4 @@
-package com.hoko.blur.api;
+package com.rejectliu.offscreendemo.util;
 
 public interface IProgram {
 

@@ -10,10 +10,10 @@
         android:layout_width="1px"
         android:layout_height="1px" />
 
-<!--    <TextView-->
-<!--        android:background="@android:color/black"-->
-<!--        android:textSize="30sp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:text="我看见你辣"-->
-<!--        android:layout_height="wrap_content" />-->
+    <TextView
+        android:layout_marginTop="200dp"
+        android:textSize="50sp"
+        android:layout_width="wrap_content"
+        android:text="我是一个textview"
+        android:layout_height="wrap_content" />
 </FrameLayout>

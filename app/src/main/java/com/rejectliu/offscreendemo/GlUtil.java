@@ -43,6 +43,38 @@ public class GlUtil {
 
 
     private GlUtil() {}     // do not instantiate
+    public static int loadProgram(final String strVSource, final String strFSource) {
+        int iVShader;
+        int iFShader;
+        int iProgId;
+        int[] link = new int[1];
+        iVShader = loadShader(GLES20.GL_VERTEX_SHADER, strVSource);
+        if (iVShader == 0) {
+            Log.d("Load Program", "Vertex Shader Failed");
+            return 0;
+        }
+        iFShader = loadShader(GLES20.GL_FRAGMENT_SHADER, strFSource);
+        if (iFShader == 0) {
+            Log.d("Load Program", "Fragment Shader Failed");
+            return 0;
+        }
+
+        iProgId = GLES20.glCreateProgram();
+
+        GLES20.glAttachShader(iProgId, iVShader);
+        GLES20.glAttachShader(iProgId, iFShader);
+
+        GLES20.glLinkProgram(iProgId);
+
+        GLES20.glGetProgramiv(iProgId, GLES20.GL_LINK_STATUS, link, 0);
+        if (link[0] <= 0) {
+            Log.d("Load Program", "Linking Failed");
+            return 0;
+        }
+        GLES20.glDeleteShader(iVShader);
+        GLES20.glDeleteShader(iFShader);
+        return iProgId;
+    }
 
     /**
      * Creates a new program from the supplied vertex and fragment shaders.

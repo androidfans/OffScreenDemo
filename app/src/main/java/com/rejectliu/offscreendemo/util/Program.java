@@ -1,11 +1,9 @@
-package com.rejectliu.offscreendemo.program;
+package com.rejectliu.offscreendemo.util;
 
 import android.opengl.GLES20;
 import android.util.Log;
 
-import com.hoko.blur.api.IProgram;
-
-import static com.hoko.blur.util.ShaderUtil.checkGLError;
+import static com.rejectliu.offscreendemo.util.ShaderUtil.checkGLError;
 
 public class Program implements IProgram {
 

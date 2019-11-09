@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.gles;
-
-import android.opengl.Matrix;
+package com.rejectliu.offscreendemo;
 
 /**
  * This class essentially represents a viewport-sized sprite that will be rendered with
@@ -25,7 +23,6 @@ import android.opengl.Matrix;
 public class FullFrameRect {
     private final Drawable2d mRectDrawable = new Drawable2d(Drawable2d.Prefab.FULL_RECTANGLE);
     private Texture2dProgram mProgram;
-
     /**
      * Prepares the object.
      *
@@ -82,10 +79,10 @@ public class FullFrameRect {
      */
     public void drawFrame(int textureId, float[] texMatrix) {
         // Use the identity matrix for MVP so our 2x2 FULL_RECTANGLE covers the viewport.
-        mProgram.draw(GlUtil.IDENTITY_MATRIX, mRectDrawable.getVertexArray(), 0,
-                mRectDrawable.getVertexCount(), mRectDrawable.getCoordsPerVertex(),
-                mRectDrawable.getVertexStride(),
-                texMatrix, mRectDrawable.getTexCoordArray(), textureId,
-                mRectDrawable.getTexCoordStride());
+        //        mProgram.draw(GlUtil.IDENTITY_MATRIX, mRectDrawable.getVertexArray(), 0,
+//                mRectDrawable.getVertexCount(), mRectDrawable.getCoordsPerVertex(),
+//                mRectDrawable.getVertexStride(),
+//                texMatrix, mRectDrawable.getTexCoordArray(), textureId,
+//                mRectDrawable.getTexCoordStride());
     }
 }

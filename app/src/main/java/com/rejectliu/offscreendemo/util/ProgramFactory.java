@@ -1,6 +1,5 @@
-package com.rejectliu.offscreendemo.program;
+package com.rejectliu.offscreendemo.util;
 
-import com.hoko.blur.api.IProgram;
 
 public class ProgramFactory {
 
