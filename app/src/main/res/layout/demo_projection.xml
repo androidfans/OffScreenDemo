@@ -5,13 +5,11 @@
     android:background="@drawable/timg"
     android:layout_height="match_parent">
 
-    <View
-        android:background="@android:color/holo_red_dark"
-        android:layout_width="1px"
-        android:layout_height="1px" />
 
     <TextView
-        android:layout_marginTop="200dp"
+        android:textColor="@android:color/white"
+        android:id="@+id/textview"
+        android:layout_marginTop="100dp"
         android:textSize="50sp"
         android:layout_width="wrap_content"
         android:text="我是一个textview"

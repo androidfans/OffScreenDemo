@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
         SimplePresentation simplePresentation = new SimplePresentation(this, offscreenDisplay.getDisplay());
         simplePresentation.show();
 
+
         surfaceView = findViewById(R.id.surface_view);
         surfaceView.setEGLContextClientVersion(2);
         viewRenderer = new VirtualViewRenderer(mSurfaceTexture);
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (viewRenderer != null && fromUser) {
-            viewRenderer.setBlurSize(progress / 2);
+            viewRenderer.setBlurSize(progress / 3);
             surfaceView.requestRender();
         }
     }
