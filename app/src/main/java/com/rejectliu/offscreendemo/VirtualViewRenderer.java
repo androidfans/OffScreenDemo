@@ -31,6 +31,7 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
     RenderNotifier notifier;
     private GLImageGaussianBlurFilter mGlImageGaussianBlurFilter;
     private GLImageOESInputFilter mGlImageOESInputFilter;
+    private GLImageFilter mGlImageFilter;
 
     public void setNotifier(RenderNotifier notifier) {
         this.notifier = notifier;
@@ -51,8 +52,9 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
         mTextureId = OpenGLUtils.createOESTexture();
 
         mGlImageGaussianBlurFilter = new GLImageGaussianBlurFilter(null);
-        mGlImageGaussianBlurFilter.setBlurSize(0f);
+        mGlImageGaussianBlurFilter.setBlurSize(1f);
         mGlImageOESInputFilter = new GLImageOESInputFilter(null);
+        mGlImageFilter = new GLImageFilter(null);
     }
 
     @Override
@@ -65,6 +67,10 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
         mGlImageOESInputFilter.onInputSizeChanged(MainActivity.Width, MainActivity.Height);
         mGlImageOESInputFilter.initFrameBuffer(MainActivity.Width, MainActivity.Height);
         mGlImageOESInputFilter.onDisplaySizeChanged(MainActivity.Width, MainActivity.Height);
+
+        mGlImageFilter.onInputSizeChanged(MainActivity.Width, MainActivity.Height);
+        mGlImageFilter.initFrameBuffer(MainActivity.Width, MainActivity.Height);
+        mGlImageFilter.onDisplaySizeChanged(MainActivity.Width, MainActivity.Height);
     }
 
 
@@ -84,7 +90,8 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
         long l = SystemClock.elapsedRealtime();
         mGlImageOESInputFilter.setTextureTransformMatrix(mSTMatrix);
         int textureId = mGlImageOESInputFilter.drawFrameBuffer(mTextureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
-        mGlImageGaussianBlurFilter.drawFrame(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+        textureId = mGlImageGaussianBlurFilter.drawFrameBuffer(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+        mGlImageFilter.drawFrame(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
         long cost = SystemClock.elapsedRealtime() - l;
         if (notifier != null) {
             notifier.onRenderTime(cost);
@@ -117,8 +124,9 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
 
     public void setBlurSize(float size) {
         if (mGlImageGaussianBlurFilter != null) {
-            mGlImageGaussianBlurFilter.setBlurSize(size);
-            mGlImageGaussianBlurFilter.onInputSizeChanged(MainActivity.Width, MainActivity.Height);
+//            mGlImageGaussianBlurFilter.setBlurSize(size);
+//            mGlImageGaussianBlurFilter.onInputSizeChanged(MainActivity.Width, MainActivity.Height);
+            mGlImageGaussianBlurFilter.setRadius((int) size);
         }
     }
 }

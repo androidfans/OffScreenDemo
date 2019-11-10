@@ -8,7 +8,6 @@ import android.hardware.display.VirtualDisplay;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.SeekBar;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements SurfaceTexture.OnFrameAvailableListener, TextureView.SurfaceTextureListener, VirtualViewRenderer.RenderNotifier, SeekBar.OnSeekBarChangeListener {
 
     private GLSurfaceView surfaceView;
-    private TextureView textView;
+    private TextureView textureView;
     private SurfaceTexture mSurfaceTexture;
     private SeekBar seekBar;
     private TextView mTextView;
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (viewRenderer != null && fromUser) {
-            viewRenderer.setBlurSize(progress / 10);
+            viewRenderer.setBlurSize(progress / 2);
             surfaceView.requestRender();
         }
     }

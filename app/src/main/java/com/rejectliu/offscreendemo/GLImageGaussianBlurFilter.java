@@ -9,8 +9,8 @@ import java.nio.FloatBuffer;
  */
 public class GLImageGaussianBlurFilter extends GLImageFilter {
 
-    protected GLImageGaussPassFilter mVerticalPassFilter;
-    protected GLImageGaussPassFilter mHorizontalPassFilter;
+    protected GLImageGaussPassOldFilter mVerticalPassFilter;
+    protected GLImageGaussPassOldFilter mHorizontalPassFilter;
 
     private int mCurrentTexture;
 
@@ -19,20 +19,20 @@ public class GLImageGaussianBlurFilter extends GLImageFilter {
         initFilters();
     }
 
-    public GLImageGaussianBlurFilter(Context context, String vertexShader, String fragmentShader) {
-        super(context, vertexShader, fragmentShader);
-        initFilters(vertexShader, fragmentShader);
-    }
+//    public GLImageGaussianBlurFilter(Context context, String vertexShader, String fragmentShader) {
+//        super(context, vertexShader, fragmentShader);
+//        initFilters(vertexShader, fragmentShader);
+//    }
 
     private void initFilters() {
-        mVerticalPassFilter = new GLImageGaussPassFilter(mContext);
-        mHorizontalPassFilter = new GLImageGaussPassFilter(mContext);
+        mVerticalPassFilter = new GLImageGaussPassOldFilter(mContext);
+        mHorizontalPassFilter = new GLImageGaussPassOldFilter(mContext);
     }
 
-    private void initFilters(String vertexShader, String fragmentShader) {
-        mVerticalPassFilter = new GLImageGaussPassFilter(mContext, vertexShader, fragmentShader);
-        mHorizontalPassFilter = new GLImageGaussPassFilter(mContext, vertexShader, fragmentShader);
-    }
+//    private void initFilters(String vertexShader, String fragmentShader) {
+//        mVerticalPassFilter = new GLImageGaussPassOldFilter(mContext, vertexShader, fragmentShader);
+//        mHorizontalPassFilter = new GLImageGaussPassOldFilter(mContext, vertexShader, fragmentShader);
+//    }
 
     @Override
     public void initProgramHandle() {
@@ -146,6 +146,16 @@ public class GLImageGaussianBlurFilter extends GLImageFilter {
 
         if (mHorizontalPassFilter != null) {
             mHorizontalPassFilter.setBlurSize(blurSize);
+        }
+    }
+
+    public void setRadius(int radius) {
+        if (mVerticalPassFilter != null) {
+            mVerticalPassFilter.setRadius(radius);
+        }
+
+        if (mHorizontalPassFilter != null) {
+            mHorizontalPassFilter.setRadius(radius);
         }
     }
 }

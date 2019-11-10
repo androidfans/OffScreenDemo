@@ -7,7 +7,7 @@ import android.opengl.GLES20;
 /**
  * 某个通道的高斯模糊
  */
-class GLImageGaussPassFilter extends GLImageFilter {
+class GLImageGaussPassHighPerfFilter extends GLImageFilter {
 
     protected float mBlurSize = 1f;
 
@@ -65,13 +65,13 @@ class GLImageGaussPassFilter extends GLImageFilter {
                     "    }\n" +
                     "}";
 
-    public GLImageGaussPassFilter(Context context) {
+    public GLImageGaussPassHighPerfFilter(Context context) {
         this(context, vertexShader,
                 fragmentShader);
 
     }
 
-    public GLImageGaussPassFilter(Context context, String vertexShader, String fragmentShader) {
+    public GLImageGaussPassHighPerfFilter(Context context, String vertexShader, String fragmentShader) {
         super(context, vertexShader, fragmentShader);
     }
 
