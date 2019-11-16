@@ -1,4 +1,4 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.util;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

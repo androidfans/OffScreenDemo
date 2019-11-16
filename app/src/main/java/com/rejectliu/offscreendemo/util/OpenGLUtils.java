@@ -1,4 +1,4 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,8 +9,6 @@ import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.rejectliu.offscreendemo.util.BitmapUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

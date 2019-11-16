@@ -1,4 +1,4 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.util;
 
 /**
  * Created by cain on 17-7-26.

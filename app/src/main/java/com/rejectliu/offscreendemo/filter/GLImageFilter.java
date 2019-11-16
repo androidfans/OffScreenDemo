@@ -1,10 +1,13 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.filter;
 
 import android.content.Context;
 import android.graphics.PointF;
 import android.opengl.GLES30;
 import android.text.TextUtils;
 
+
+import com.rejectliu.offscreendemo.util.OpenGLUtils;
+import com.rejectliu.offscreendemo.util.TextureRotationUtils;
 
 import java.nio.FloatBuffer;
 import java.util.LinkedList;

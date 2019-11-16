@@ -1,38 +1,33 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.filter;
 
 import android.content.Context;
+
+import com.rejectliu.offscreendemo.util.OpenGLUtils;
 
 import java.nio.FloatBuffer;
 
 /**
  * 高斯模糊滤镜
  */
-public class GLImageGaussianBlurFilter extends GLImageFilter {
+public class GLImageStackBlurFilter extends GLImageFilter {
 
-    protected GLImageGaussPassOldFilter mVerticalPassFilter;
-    protected GLImageGaussPassOldFilter mHorizontalPassFilter;
+    protected GLImageStackPassFilter mVerticalPassFilter;
+    protected GLImageStackPassFilter mHorizontalPassFilter;
 
     private int mCurrentTexture;
 
-    public GLImageGaussianBlurFilter(Context context) {
+    public GLImageStackBlurFilter(Context context) {
         super(context, null, null);
         initFilters();
     }
 
-//    public GLImageGaussianBlurFilter(Context context, String vertexShader, String fragmentShader) {
-//        super(context, vertexShader, fragmentShader);
-//        initFilters(vertexShader, fragmentShader);
-//    }
 
     private void initFilters() {
-        mVerticalPassFilter = new GLImageGaussPassOldFilter(mContext);
-        mHorizontalPassFilter = new GLImageGaussPassOldFilter(mContext);
+        mVerticalPassFilter = new GLImageStackPassFilter(mContext);
+        mHorizontalPassFilter = new GLImageStackPassFilter(mContext);
+        setBlurSize(1.0f);
     }
 
-//    private void initFilters(String vertexShader, String fragmentShader) {
-//        mVerticalPassFilter = new GLImageGaussPassOldFilter(mContext, vertexShader, fragmentShader);
-//        mHorizontalPassFilter = new GLImageGaussPassOldFilter(mContext, vertexShader, fragmentShader);
-//    }
 
     @Override
     public void initProgramHandle() {
@@ -141,21 +136,12 @@ public class GLImageGaussianBlurFilter extends GLImageFilter {
      */
     public void setBlurSize(float blurSize) {
         if (mVerticalPassFilter != null) {
-            mVerticalPassFilter.setBlurSize(blurSize);
+            mVerticalPassFilter.setRadius((int) blurSize);
         }
 
         if (mHorizontalPassFilter != null) {
-            mHorizontalPassFilter.setBlurSize(blurSize);
+            mHorizontalPassFilter.setRadius((int) blurSize);
         }
     }
 
-    public void setRadius(int radius) {
-        if (mVerticalPassFilter != null) {
-            mVerticalPassFilter.setRadius(radius);
-        }
-
-        if (mHorizontalPassFilter != null) {
-            mHorizontalPassFilter.setRadius(radius);
-        }
-    }
 }

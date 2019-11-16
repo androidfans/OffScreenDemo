@@ -1,4 +1,4 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.filter;
 
 import android.content.Context;
 import android.opengl.GLES11Ext;

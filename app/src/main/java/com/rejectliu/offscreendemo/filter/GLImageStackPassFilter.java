@@ -1,4 +1,4 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.filter;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -7,7 +7,7 @@ import android.opengl.GLES20;
 /**
  * 某个通道的高斯模糊
  */
-class GLImageGaussPassOldFilter extends GLImageFilter {
+class GLImageStackPassFilter extends GLImageFilter {
 
     protected float mBlurSize = 1f;
 
@@ -19,31 +19,27 @@ class GLImageGaussPassOldFilter extends GLImageFilter {
     private float mTexelHeight;
 
     private static String fragmentShader =
-                    "precision mediump float;   \n" +
-                    "varying vec2 vTexCoord;   \n" +
-                    "uniform sampler2D inputTexture;   \n" +
-                    "uniform int uRadius;   \n" +
-                    "uniform float texelWidthOffset;  \n" +
-                    "uniform float texelHeightOffset;  \n" +
-                    "mediump float getGaussWeight(mediump float currentPos, mediump float sigma) \n" +
-                    "{ \n" +
-                    "   return 1.0 / sigma * exp(-(currentPos * currentPos) / (2.0 * sigma * sigma)); \n" +
-                    "} \n" +
-                    "void main() {   \n" +
-                    "   int diameter = 2 * uRadius + 1;  \n" +
-                    "   vec4 sampleTex = vec4(0, 0, 0, 0);\n" +
-                    "   vec3 col = vec3(0, 0, 0);  \n" +
-                    "   float weightSum = 0.0; \n" +
-                    "   for(int i = 0; i < diameter; i++) {\n" +
-                    "       vec2 offset = vec2(float(i - uRadius) * texelWidthOffset, float(i - uRadius) * texelHeightOffset);  \n" +
-                    "       sampleTex = vec4(texture2D(inputTexture, vTexCoord.st+offset));\n" +
-                    "       float index = float(i); \n" +
-                    "       float gaussWeight = getGaussWeight(index - float(diameter - 1)/2.0, (float(diameter - 1)/2.0 + 1.0) / 2.0); \n" +
-                    "       col += sampleTex.rgb * gaussWeight; \n" +
-                    "       weightSum += gaussWeight;\n" +
-                    "   }   \n" +
-                    "   gl_FragColor = vec4(col / weightSum, sampleTex.a);   \n" +
-                    "}   \n";
+                            "precision mediump float;   \n" +
+                            "varying vec2 vTexCoord;   \n" +
+                            "uniform sampler2D inputTexture;   \n" +
+                            "uniform int uRadius;   \n" +
+                            "uniform float texelWidthOffset;  \n" +
+                            "uniform float texelHeightOffset;  \n" +
+                            "void main() {   \n" +
+                            "int diameter = 2 * uRadius + 1;  \n" +
+                            "   vec4 sampleTex = vec4(0, 0, 0, 0);\n" +
+                            "   vec3 col = vec3(0, 0, 0);  \n" +
+                            "   float weightSum = 0.0; \n" +
+                            "   for(int i = 0; i < diameter; i++) {\n" +
+                            "       vec2 offset = vec2(float(i - uRadius) * texelWidthOffset, float(i - uRadius) * texelHeightOffset);  \n" +
+                            "       sampleTex = vec4(texture2D(inputTexture, vTexCoord.st+offset));\n" +
+                            "       float index = float(i); \n" +
+                            "       float boxWeight = float(uRadius) + 1.0 - abs(index - float(uRadius)); \n" +
+                            "       col += sampleTex.rgb * boxWeight; \n" +
+                            "       weightSum += boxWeight;\n" +
+                            "   }   \n" +
+                            "   gl_FragColor = vec4(col / weightSum, sampleTex.a);   \n" +
+                            "}   \n";
 
 
     private static String vertexShader =
@@ -55,13 +51,13 @@ class GLImageGaussPassOldFilter extends GLImageFilter {
                     "  vTexCoord = aTextureCoord.xy; \n" +
                     "}  \n";
 
-    public GLImageGaussPassOldFilter(Context context) {
+    public GLImageStackPassFilter(Context context) {
         this(context, vertexShader,
                 fragmentShader);
 
     }
 
-    public GLImageGaussPassOldFilter(Context context, String vertexShader, String fragmentShader) {
+    public GLImageStackPassFilter(Context context, String vertexShader, String fragmentShader) {
         super(context, vertexShader, fragmentShader);
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.util;
 
 import java.nio.FloatBuffer;
 

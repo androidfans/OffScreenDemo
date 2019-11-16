@@ -1,5 +1,6 @@
 package com.rejectliu.offscreendemo;
 
+import androidx.annotation.ArrayRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.SurfaceTexture;
@@ -10,16 +11,27 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SurfaceTexture.OnFrameAvailableListener, TextureView.SurfaceTextureListener, VirtualViewRenderer.RenderNotifier, SeekBar.OnSeekBarChangeListener {
+import com.rejectliu.offscreendemo.renderer.VirtualViewRenderer;
+import com.rejectliu.offscreendemo.util.FILTER_TYPE;
+import com.rejectliu.offscreendemo.view.SimplePresentation;
+
+public class MainActivity extends AppCompatActivity implements SurfaceTexture.OnFrameAvailableListener, TextureView.SurfaceTextureListener, VirtualViewRenderer.RenderNotifier, SeekBar.OnSeekBarChangeListener, AdapterView.OnItemSelectedListener {
 
     private GLSurfaceView surfaceView;
     private TextureView textureView;
     private SurfaceTexture mSurfaceTexture;
     private SeekBar seekBar;
-    private TextView mTextView;
+    private TextView mTimeIndicator;
     public static int Width = 0;
     public static int Height = 0;
     private VirtualViewRenderer viewRenderer;
@@ -31,9 +43,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
 
         seekBar = findViewById(R.id.seek_bar);
         seekBar.setOnSeekBarChangeListener(this);
-        mTextView = findViewById(R.id.time_indicator);
-
-
+        mTimeIndicator = findViewById(R.id.time_indicator);
 
 
         mSurfaceTexture = new SurfaceTexture(0);
@@ -41,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
         DisplayMetrics dm = getResources().getDisplayMetrics();
         DisplayManager displayManager = (DisplayManager)getSystemService(DISPLAY_SERVICE);
         Width = dm.widthPixels;
-        Height = dm.heightPixels;
+        Height = dm.heightPixels / 3;
 
         mSurfaceTexture.setDefaultBufferSize(Width, Height);
         VirtualDisplay offscreenDisplay = displayManager.createVirtualDisplay("offscreenDisplay", Width, Height, dm.densityDpi, new Surface(mSurfaceTexture), 0);
@@ -49,13 +59,19 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
         SimplePresentation simplePresentation = new SimplePresentation(this, offscreenDisplay.getDisplay());
         simplePresentation.show();
 
-
         surfaceView = findViewById(R.id.surface_view);
         surfaceView.setEGLContextClientVersion(2);
         viewRenderer = new VirtualViewRenderer(mSurfaceTexture);
         surfaceView.setRenderer(viewRenderer);
         surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        surfaceView.setLayoutParams(new RelativeLayout.LayoutParams(Width,Height));
         viewRenderer.setNotifier(this);
+
+
+
+        Spinner schemeSpinner = findViewById(R.id.scheme_spinner);
+        schemeSpinner.setAdapter(makeSpinnerAdapter(R.array.blur_modes));
+        schemeSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -90,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mTextView.setText("cost : " + cost);
+                mTimeIndicator.setText("cost : " + cost);
             }
         });
     }
@@ -110,6 +126,27 @@ public class MainActivity extends AppCompatActivity implements SurfaceTexture.On
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+
+    private SpinnerAdapter makeSpinnerAdapter(@ArrayRes int arrayRes) {
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                arrayRes, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return spinnerAdapter;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        final int spinnerId = parent.getId();
+        if (spinnerId == R.id.scheme_spinner) {
+            viewRenderer.changeAlgorithm(position);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

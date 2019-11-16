@@ -1,3 +1,9 @@
 <resources>
+    <string-array name="blur_modes">
+        <item>旧高斯</item>
+        <item>高斯gpu image</item>
+        <item>Stack模糊</item>
+        <item>Box模糊</item>
+    </string-array>
     <string name="app_name">OffScreenDemo</string>
 </resources>

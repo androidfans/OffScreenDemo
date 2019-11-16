@@ -1,20 +1,23 @@
-package com.rejectliu.offscreendemo;
+package com.rejectliu.offscreendemo.renderer;
 
 import android.graphics.SurfaceTexture;
-import android.opengl.EGL14;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 
-import java.io.File;
+import com.rejectliu.offscreendemo.MainActivity;
+import com.rejectliu.offscreendemo.filter.GLImageFilter;
+import com.rejectliu.offscreendemo.filter.GLImageGaussianBlurOldFilter;
+import com.rejectliu.offscreendemo.filter.GLImageOESInputFilter;
+import com.rejectliu.offscreendemo.util.Drawable2d;
+import com.rejectliu.offscreendemo.util.OpenGLUtils;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 
-public class VirtualViewRenderer implements GLSurfaceView.Renderer {
+public class VirtualViewRendererBackup implements GLSurfaceView.Renderer {
 
     private static final String TAG = "VirtualViewRenderer";
     private static final boolean VERBOSE = false;
@@ -29,7 +32,7 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
 
     // width/height of the incoming camera preview frames
     RenderNotifier notifier;
-    private GLImageGaussianBlurFilter mGlImageGaussianBlurFilter;
+    private GLImageGaussianBlurOldFilter mGlImageGaussianBlurFilter;
     private GLImageOESInputFilter mGlImageOESInputFilter;
     private GLImageFilter mGlImageFilter;
 
@@ -37,12 +40,10 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
         this.notifier = notifier;
     }
 
-    public VirtualViewRenderer(SurfaceTexture surfaceTexture) {
+    public VirtualViewRendererBackup(SurfaceTexture surfaceTexture) {
         mSurfaceTexture = surfaceTexture;
         mTextureId = -1;
         mFrameCount = -1;
-
-
     }
 
 
@@ -51,7 +52,7 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
         Log.d(TAG, "onSurfaceCreated");
         mTextureId = OpenGLUtils.createOESTexture();
 
-        mGlImageGaussianBlurFilter = new GLImageGaussianBlurFilter(null);
+        mGlImageGaussianBlurFilter = new GLImageGaussianBlurOldFilter(null);
         mGlImageGaussianBlurFilter.setBlurSize(1f);
         mGlImageOESInputFilter = new GLImageOESInputFilter(null);
         mGlImageFilter = new GLImageFilter(null);
@@ -81,30 +82,32 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
 
         // Latch the latest frame.  If there isn't anything new, we'll just re-use whatever
         // was there before.
+
         mSurfaceTexture.attachToGLContext(mTextureId);
         mSurfaceTexture.updateTexImage();
 
         // Draw the video frame.
         mSurfaceTexture.getTransformMatrix(mSTMatrix);
 
-        long l = SystemClock.elapsedRealtime();
         mGlImageOESInputFilter.setTextureTransformMatrix(mSTMatrix);
-        int textureId = mGlImageOESInputFilter.drawFrameBuffer(mTextureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+        int textureId = mTextureId;
+
+        textureId = mGlImageOESInputFilter.drawFrameBuffer(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+        GLES20.glFinish();
+        long l = SystemClock.elapsedRealtime();
         textureId = mGlImageGaussianBlurFilter.drawFrameBuffer(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
-        mGlImageFilter.drawFrame(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+        GLES20.glFinish();
         long cost = SystemClock.elapsedRealtime() - l;
+
+        mGlImageFilter.drawFrame(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+
+//        mGlImageOESInputFilter.drawFrame(textureId, mRectDrawable.getVertexArray(), mRectDrawable.getTexCoordArray());
+        mSurfaceTexture.detachFromGLContext();
+
+        Log.d("rejectliu", cost + "");
         if (notifier != null) {
             notifier.onRenderTime(cost);
         }
-
-//        mFullScreen.drawFrame(mTextureId, mSTMatrix);
-
-        // Draw a flashing box if we're recording.  This only appears on screen.
-        showBox = true;
-        if (showBox && (++mFrameCount & 0x04) == 0) {
-            drawBox();
-        }
-        mSurfaceTexture.detachFromGLContext();
     }
 
     /**
@@ -126,7 +129,7 @@ public class VirtualViewRenderer implements GLSurfaceView.Renderer {
         if (mGlImageGaussianBlurFilter != null) {
 //            mGlImageGaussianBlurFilter.setBlurSize(size);
 //            mGlImageGaussianBlurFilter.onInputSizeChanged(MainActivity.Width, MainActivity.Height);
-            mGlImageGaussianBlurFilter.setRadius((int) size);
+//            mGlImageGaussianBlurFilter.setRadius((int) size);
         }
     }
 }
